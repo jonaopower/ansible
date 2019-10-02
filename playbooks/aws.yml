@@ -5,6 +5,22 @@
   vars:
       ansible_user: centos
   roles:
-#    - ansible
     - docker
-#    - rundeck
+
+  tasks:
+    - name: Copiando chave privada para novo servidor criado
+      copy:
+        src: /root/.ssh/id_rsa
+        dest: /root/.ssh/id_rsa-private
+        owner: root
+        group: root
+        mode: '0400'
+
+    - name: Clonando repositorio com o codigo .NET Core
+      git:
+        repo: git@github.com:jonaopower/docker-dotnet.git
+        version: master
+        accept_hostkey: yes
+        dest: /usr/src/git/docker-dotnet
+        key_file: /root/.ssh/id_rsa-private
+        force: yes
