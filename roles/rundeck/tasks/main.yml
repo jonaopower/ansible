@@ -1,0 +1,49 @@
+---
+# tasks file for rundeck server -- By Jonas Soares
+#
+- name: Instalacao de dependencias e Repositorio oficial do Rundeck
+  yum:
+    name: "{{ item }}" 
+    state: present
+    validate_certs: no
+  loop:
+    - vim
+    - java-1.8.0
+    - git
+    - https://repo.rundeck.org/latest.rpm
+  
+
+
+- name: Instalacao do Rundeck Server
+  yum:
+    name: rundeck
+    state: present
+
+
+- name: Configurando Rundeck
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - {path: '/etc/rundeck/framework.properties', regexp: '^framework.server.name', line: 'framework.server.name = Localiza DevOps'}
+    - {path: '/etc/rundeck/framework.properties', regexp: '^framework.server.hostname', line: 'framework.server.hostname = rundeck.localiza.dev'}
+    - {path: '/etc/rundeck/framework.properties', regexp: '^framework.server.port', line: 'framework.server.port = 4440'}
+    - {path: '/etc/rundeck/framework.properties', regexp: '^framework.server.url', line: 'framework.server.url = http://rundeck.localiza.dev:4440'}
+    - {path: '/etc/rundeck/rundeck-config.properties', regexp: '^grails.server', line: 'grails.serverURL=http://rundeck.localiza.dev:4440'}
+
+
+
+#- name: Desabilitando servico de firewall nativo Centos 7
+#  systemd:
+#    name: firewalld
+#    state: stopped
+#    enabled: no
+
+
+
+- name: Iniciando e Habilitando o serviço do rundeck
+  systemd:
+    name: rundeckd
+    state: restarted
+    enabled: yes

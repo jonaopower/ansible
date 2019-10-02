@@ -1,0 +1,6 @@
+- name: Executando as roles do servidor Lab02
+  hosts: lab2
+  roles:
+    - rundeck
+    - ansible
+    - docker

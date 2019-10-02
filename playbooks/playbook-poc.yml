@@ -1,0 +1,4 @@
+- name: Executando as roles dos servidores POC DOCKER
+  hosts: poc_docker
+  roles:
+    - docker

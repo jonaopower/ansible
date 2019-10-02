@@ -1,0 +1,11 @@
+- name: Modificando AWS Route53
+  hosts: aws
+- route53:
+      state: present
+      zone: devopsteam.dev
+      record: new.foo.com
+      type: A
+      ttl: 7200
+      value: 1.1.1.1,2.2.2.2,3.3.3.3
+      wait: yes
+

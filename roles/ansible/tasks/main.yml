@@ -1,0 +1,30 @@
+---
+# tasks file for Ansible server/agent -- By Jonas Soares
+#
+- name: Instalacao do Ansible
+  yum:
+    name: "{{ item }}" 
+    state: present
+  loop:
+    - ansible
+    - epel-release
+  
+
+- name: Configurando o Ansible... Arquivos
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - {path: '/etc/ansible/ansible.cfg', regexp: '^#host_key_checking', line: 'host_key_checking = False'}
+    - {path: '/etc/ansible/ansible.cfg', regexp: '^#private_key_file =', line: 'private_key_file = /root/.ssh/id_rsa'}
+
+
+- name: Configurando o Ansible... diretorios
+  file:
+    path: "{{ item.folder }}" 
+    state: "{{ item.state }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - {folder: '/etc/ansible/playbooks/', state: 'directory', mode: '0755'}
+    - {folder: '/etc/ansible/roles/', state: 'directory', mode: '0755'}

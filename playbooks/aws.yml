@@ -1,0 +1,10 @@
+- name: Executando as roles dos servidores AWS
+  hosts: aws
+  become: True
+  become_user: root
+  vars:
+      ansible_user: centos
+  roles:
+#    - ansible
+    - docker
+#    - rundeck
