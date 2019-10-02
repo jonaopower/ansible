@@ -9,10 +9,11 @@
     - yum-utils
     - device-mapper-persistent-data
     - curl
-    - lvm2
     - vim
     - bash-completion
     - git
+    - python2-pip.noarch
+    - python3-pip.noarch
 
 - name: Adicionar repositório do Docker-Engine
   get_url:

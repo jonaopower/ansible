@@ -24,3 +24,28 @@
         dest: /usr/src/git/docker-dotnet
         key_file: /root/.ssh/id_rsa-private
         force: yes
+
+
+    - name: Instalando modulo Docker do Python atraves do PIP
+      pip:
+        name: docker
+
+
+    - name: Build de imagem baseada em Dockerfile
+      docker_image:
+        name: imagem_jonaopower:v1.0
+        build:
+          path: /usr/src/git/docker-dotnet
+        buildargs:
+          log_volume: /usr/src/git/docker-dotnet
+          listen_port: 80
+        source: build
+
+
+    - name: Cria container a partir da nova imagem
+      docker_container:
+        name: meu_app_novo
+        image: imagem_jonaopower:v1.0
+        ports:
+          - "80:80"
+
